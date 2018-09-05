@@ -9,7 +9,7 @@ struct rbtree_node {
 };
 rbtree_node *root=NULL;
 
-btree_node* BSTInsert(rbtree_node* root, rbtree_node *New)
+rbtree_node* BSTInsert(rbtree_node* root, rbtree_node *New)
 {
     
     if (root == NULL)
