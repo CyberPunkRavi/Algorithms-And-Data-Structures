@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-struct rbtree_node {
-    char colour;
-    int key;
+typedef struct rbtree_node {
+    char color;
+    int data;
     struct rbtree_node *left,
                      *right,
                      *parent;
-};
+}rbtree_node;
 rbtree_node *root=NULL;
+
 
 rbtree_node* BSTInsert(rbtree_node* root, rbtree_node *New)
 {
@@ -15,12 +16,12 @@ rbtree_node* BSTInsert(rbtree_node* root, rbtree_node *New)
     if (root == NULL)
        return New;
     
-    if (New->key < root->rbtree_node)
+    if (New->data < root->data)
     {
         root->left  = BSTInsert(root->left, New);
         root->left->parent = root;
     }
-    else if (New->data > root->key)
+    else if (New->data > root->data)
     {
         root->right = BSTInsert(root->right, New);
         root->right->parent = root;
@@ -29,16 +30,60 @@ rbtree_node* BSTInsert(rbtree_node* root, rbtree_node *New)
     return root;
 }
 
- void redBlackInsert(rbtree_node **root, int z) {  
+ rbtree_node* redBlackInsert(rbtree_node *root, int z) {  
     rbtree_node *New = (rbtree_node *)malloc(sizeof(rbtree_node));
-    New->key = z;
+/*    
+    New->data = z;
     New->left = NULL;
     New->right = NULL;
     New->color = 'R';
     
+	rbtree_node *Yp = NULL;
+      rbtree_node *Xp = root;
+ 
+    while (Xp != NULL) {
+        Yp = Xp;
+        if (New->data < Xp->data)
+            Xp = Xp->left;
+        Xp = Xp->right;
+    }
+    New->parent = Yp;
+    if (Yp == NULL) 
+        root = New;
+    else if (New->data < Yp->data)
+            Yp->left = New;
+    else
+            Yp->right = New;
+    New->left = NULL;
+    New->right = NULL;
+    New->color = 'R';
+    
+    printf("%d\n",root->data);
+    
+    return root;
+ */   
     root = BSTInsert(root, New);
+    return root;
      
     //redBlackInsertFixup(Root, New);
+}
+display(rbtree_node *root)
+{
+
+				printf("\n***in disple ***\n");
+	if(root==NULL)
+	{
+	   printf("\n***root is null ***\n");
+		return;
+	}
+	else
+	{
+		printf("%d\n",root->data);
+		display(root->left);
+		display(root->right);
+		
+		return;
+	}
 }
 
 
@@ -65,7 +110,9 @@ int main(int argc, char *argv[]) {
 			int key;
 			printf("\n***Enter Key for insert into K-RB Tree***\n");
 			scanf("%d",&key);
-			redBlackInsert(root,key);
+			if (root == NULL)
+			root = redBlackInsert(root,key);
+			else redBlackInsert(root,key);
 		}
 		else if ( oprtn == 2 ) {
 			int key;
@@ -80,9 +127,12 @@ int main(int argc, char *argv[]) {
 			//find(key);
 		}
 		else{
-			printf("\n***Select Correct Operation ***\n");	
+			printf("\n***Select Correct Operation ***\n");
+			display(root);
+			printf("\n***after calling disple ***\n");
 		
 		}
 	}
+	
     return 0;
 }
