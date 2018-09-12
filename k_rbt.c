@@ -1,4 +1,4 @@
-x/* red-black tree */
+/* red-black tree */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +10,7 @@ typedef int T;                  /* type of item to be stored */
 #define compLT(a,b) (a < b)
 #define compEQ(a,b) (a == b)
 
+static int k =2;
 /* Red-Black tree description */
 typedef enum { BLACK, RED } nodeColor;
 
@@ -82,6 +83,28 @@ void rotateRight(Node *x) {
     if (x != NIL) x->parent = y;
 }
 
+int is_k_red_conflict(Node *x) {
+  int ct=k;
+  Node* cur = x;
+  while ( (cur->parent != NIL) && cur->parent->color != 0  ){
+	    ct--;
+	    cur=cur->parent;    
+	}
+	
+	if(ct <=0){
+	 printf("\n K red conflit");
+	 return 1;
+	
+	}
+	else{
+	printf("\n No K red conflit");
+	return 0;
+	}
+
+
+
+}
+
 void insertFixup(Node *x) {
 
    /*************************************
@@ -90,7 +113,7 @@ void insertFixup(Node *x) {
     *************************************/
 
     /* check Red-Black properties */
-    while (x != root && x->parent->color == RED) {
+    while (x != root && is_k_red_conflict(x)) {
         /* we have a violation */
         if (x->parent == x->parent->parent->left) {
             Node *y = x->parent->parent->right;
@@ -309,8 +332,13 @@ void display(Node *root)
 
 	if(root!=NIL)
 	{
-		printf("%d\n",root->data);
-		printf("%d\n",root->color);
+	      printf("\nValues at each node");
+		printf("data at node %d\n",root->data);
+		printf("color %d\n",root->color);
+		printf("left %d\n",root->left->data);
+		printf("right %d\n",root->right->data);
+		if(root->parent != 0)
+		printf("parent %d\n",root->parent->data);
 		display(root->left);
 		display(root->right);
 		
