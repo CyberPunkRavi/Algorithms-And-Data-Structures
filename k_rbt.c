@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdarg.h>
 
-
 typedef int T;                  /* type of item to be stored */
 #define compLT(a,b) (a < b)
 #define compEQ(a,b) (a == b)
@@ -18,7 +17,7 @@ typedef struct Node_ {
     struct Node_ *left;         /* left child */
     struct Node_ *right;        /* right child */
     struct Node_ *parent;       /* parent */
-    nodeColor color;            /* node color (BLACK, RED) */
+    nodeColor color;            /* node color (BLACK(0), RED(0)) */
     T data;                     /* data stored in node */
 } Node;
 
@@ -26,6 +25,8 @@ typedef struct Node_ {
 Node sentinel = { NIL, NIL, 0, BLACK, 0};
 
 Node *root = NIL;               /* root of Red-Black tree */
+Node *k_root = NIL;
+int is_left ;
 
 void rotateLeft(Node *x) {
 
@@ -88,7 +89,13 @@ int is_k_red_conflict(Node *x) {
   Node* cur = x;
   while ( (cur->parent != NIL) && cur->parent->color != 0  ){
 	    ct--;
-	    cur=cur->parent;    
+	    if(ct = k-1){
+	        is_left = (cur == cur->parent->left)?1:0;
+	    }
+	    if(ct = k){
+	      k_root = cur;
+	    }
+	    cur=cur->parent;  	      
 	}
 	
 	if(ct <=0){
@@ -100,9 +107,6 @@ int is_k_red_conflict(Node *x) {
 	printf("\n No K red conflit");
 	return 0;
 	}
-
-
-
 }
 
 void insertFixup(Node *x) {
@@ -115,52 +119,67 @@ void insertFixup(Node *x) {
     /* check Red-Black properties */
     while (x != root && is_k_red_conflict(x)) {
         /* we have a violation */
-        if (x->parent == x->parent->parent->left) {
-            Node *y = x->parent->parent->right;
-            if (y->color == RED) {
-
-                /* uncle is RED */
-                x->parent->color = BLACK;
-                y->color = BLACK;
-                x->parent->parent->color = RED;
-                x = x->parent->parent;
-            } else {
-
-                /* uncle is BLACK */
-                if (x == x->parent->right) {
-                    /* make x a left child */
-                    x = x->parent;
-                    rotateLeft(x);
-                }
-
-                /* recolor and rotate */
-                x->parent->color = BLACK;
-                x->parent->parent->color = RED;
-                rotateRight(x->parent->parent);
-            }
-        } else {
-
-            /* mirror image of above code */
-            Node *y = x->parent->parent->left;
-            if (y->color == RED) {
-
-                /* uncle is RED */
-                x->parent->color = BLACK;
-                y->color = BLACK;
-                x->parent->parent->color = RED;
-                x = x->parent->parent;
-            } else {
-
-                /* uncle is BLACK */
-                if (x == x->parent->left) {
-                    x = x->parent;
-                    rotateRight(x);
-                }
-                x->parent->color = BLACK;
-                x->parent->parent->color = RED;
-                rotateLeft(x->parent->parent);
-            }
+        
+        //k_root has single child then do rotations
+        if(k_root->right==NIL || k_root->left==NIL ){
+             
+             if(k_root->left==NIL)
+              rotateLeft(k_root);
+             else 
+              rotateRight(k_root);
+               
         }
+        //make coloring and rotations
+        else {
+		  if (k_root == k_root->parent->left ) {
+		 
+		      Node *y = k_root->parent->right;
+		      if (y->color == RED) {
+
+		          /* k_root sibling is RED */
+		          k_root->color = BLACK;
+		          y->color = BLACK;
+		          k_root->parent->color = RED;
+		          x = k_root->parent;
+		      } else {
+
+		          /* k_root sibling is BLACK */
+		          if (!is_left) {  //x is right child of k_root
+		              /* make x a left child */
+		              x = k_root;
+		              rotateLeft(x);
+		          }
+
+		          /* recolor and rotate */   //x is left child of k_root
+		          k_root->color = BLACK;
+		          k_root->parent->color = RED;
+		          rotateRight(k_root->parent);
+		      }
+		  } else {
+
+		      /* mirror image of above code */
+		      Node *y = k_root->parent->left;
+		      if (y->color == RED) {
+
+		          /* k_root sibbling is RED */
+		          k_root->color = BLACK;
+		          y->color = BLACK;
+		          k_root->parent->color = RED;
+		          x = k_root->parent;
+		      } else {
+
+		          /* k_root sibling is BLACK */
+		          if (is_left) {
+		              x = k_root;
+		              rotateRight(x);
+		          }
+		          k_root->color = BLACK;
+		          k_root->parent->color = RED;
+		          rotateLeft(x->parent->parent);
+		      }
+		  
+		  }
+		}
     }
     root->color = BLACK;
 }
@@ -344,7 +363,7 @@ void display(Node *root)
 		
 	}
 }
-void main(int argc, char **argv) {
+void main() {
     int a, maxnum, ct;
     Node *t;
 
@@ -357,8 +376,8 @@ void main(int argc, char **argv) {
      *
      */
     printf("You are in Main FUnction");
-    maxnum = atoi(argv[1]);
-
+    //maxnum = atoi(argv[1]);
+    maxnum = 10;
     for (ct = maxnum; ct; ct--) {
         a = rand() % 9 + 2;
         printf("\n inserting a '%d'\n",a);
