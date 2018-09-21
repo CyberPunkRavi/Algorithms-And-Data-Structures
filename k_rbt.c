@@ -27,7 +27,7 @@ Node sentinel = { NIL, NIL, 0, BLACK, 0};
 Node *root = NIL;               /* root of Red-Black tree */
 Node *k_root = NIL;
 int is_left ;
-
+void display(Node *root);
 void rotateLeft(Node *x) {
 
    /**************************
@@ -89,18 +89,23 @@ int is_k_red_conflict(Node *x) {
   Node* cur = x;
   while ( (cur->parent != NIL) && cur->parent->color != 0  ){
 	    ct--;
-	    if(ct = k-1){
+	    printf("\nK value for a node %d ",ct);
+	    if(ct == 0){
 	        is_left = (cur == cur->parent->left)?1:0;
 	    }
-	    if(ct = k){
-	      k_root = cur;
+	    if(ct == 0){
+	      k_root = cur->parent;
+	      break;
 	    }
 	    cur=cur->parent;  	      
 	}
-	
+	 	 	
 	if(ct <=0){
 	 printf("\n K red conflit");
+	 printf("\n ----K root red conflit:%d",k_root->data);
+       printf("\n ----K root left child :%d",is_left);
 	 return 1;
+	 
 	
 	}
 	else{
@@ -117,10 +122,12 @@ void insertFixup(Node *x) {
     *************************************/
 
     /* check Red-Black properties */
+
     while (x != root && is_k_red_conflict(x)) {
         /* we have a violation */
         
         //k_root has single child then do rotations
+         printf("\nInsertion fixing up");
         if(k_root->right==NIL || k_root->left==NIL ){
              
              if(k_root->left==NIL)
@@ -158,6 +165,7 @@ void insertFixup(Node *x) {
 		  } else {
 
 		      /* mirror image of above code */
+		      printf("hello");
 		      Node *y = k_root->parent->left;
 		      if (y->color == RED) {
 
@@ -175,13 +183,19 @@ void insertFixup(Node *x) {
 		          }
 		          k_root->color = BLACK;
 		          k_root->parent->color = RED;
-		          rotateLeft(x->parent->parent);
+		          rotateLeft(k_root->parent);
 		      }
-		  
+		 
 		  }
 		}
+		
+		display(root);
+     
     }
     root->color = BLACK;
+    
+    display(root);//remove after debugging
+     
 }
 
 Node *insertNode(T data) {
@@ -363,7 +377,7 @@ void display(Node *root)
 		
 	}
 }
-void main() {
+void main(int argc, char **argv ) {
     int a, maxnum, ct;
     Node *t;
 
@@ -375,22 +389,70 @@ void main() {
      *       process 2000 records
      *
      */
-    printf("You are in Main FUnction");
-    //maxnum = atoi(argv[1]);
-    maxnum = 10;
+    /*
+    maxnum = atoi(argv[1]);
+    //maxnum = 10;
     for (ct = maxnum; ct; ct--) {
         a = rand() % 9 + 2;
         printf("\n inserting a '%d'\n",a);
         insertNode(a);
-              
-/*      
+        
+        display(root);
+        
+             
         if ((t = findNode(a)) != NULL) {
             deleteNode(t);
         } else {
             insertNode(a);
         }
-*/        
-    }
-    		printf("%d\n",root->data);
+       
+        
+    }*/
+    
+    printf("\n***Select K-RB Tree Operations***\n");
+	int oprtn;
+	while (1){
+	
+		printf("\n***Enter 1 for K-RB Tree Insertion***\n");
+		printf("\n***Enter 2 for K-RB Tree Deletion***\n");
+		printf("\n***Enter 3 for K-RB Tree Find***\n");
+		printf("\n***Enter -1 for Exit***\n");
+		scanf("%d",&oprtn);
+		
+		if( oprtn == -1 ) {
+			printf("\n***Exiting Code***\n");
+			break;
+            }   
+		else if ( oprtn == 1 ) {
+			int key;
+			printf("\n***Enter Key for insert into K-RB Tree***\n");
+			scanf("%d",&key);
+			insertNode(key);
+			
+		}
+		else if ( oprtn == 2 ) {
+			int key;
+			printf("\n***Enter Key for delete from K-RB Tree***\n");
+			scanf("%d",&key);
+			//delete(key);
+		}
+		else if ( oprtn == 3 ) {
+			int key;
+			printf("\n***Enter Key for find in K-RB Tree***\n");
+			scanf("%d",&key);
+			//find(key);
+		}
+		else{
+			printf("\n***Select Correct Operation ***\n");
+			display(root);
+			printf("\n***after calling disple ***\n");
+		
+		}
+	}
+    
+              
+
+    
+    printf("%d\n",root->data);
    display(root);
 }
