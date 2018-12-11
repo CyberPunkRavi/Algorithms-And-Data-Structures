@@ -1,0 +1,9 @@
+Let G be a directed graph over n nodes and m edges. Let there be a special node "s" on this graph called the start node. Every edge is labeled by a probability (a real number in [0,1]), and the sum of probabilities over all outgoing edges from any given node is 1. (For those who know, this is the nXn stochastic matrix).
+
+Suppose an ant starts from the start node and walks for $k$ steps along the edges choosing the next node according to the probability distribution over the outgoing edges. Let us call the resulting sequence of nodes (e.g. s,v1,v2,..,vk) a *run* of the ant. Your program should be able to generate independent runs of the ant, every run starting from the start node s.
+
+Construct a bloom filter that stores runs of this ant. After completion of each $k$-long run, store it in the bloom filter. Essentially, a hash function should take s,v1,v2,..vk and map it to one cell in the bloom filter. The number r of such runs that need to be stored is also an input parameter. Subsequently, a user should be able to query whether a run s,u1,u2,...,uk was ever taken in the past by the ant.
+
+To summarize, your program should take the following inputs: the graph G (along with probability weights) and the number r of runs that need to be stored. The output should be a bloom filter populated with the r runs that were generate by your program, and a query module. You should use a filter size -to- number of hash functions combination that minimizes the false positive probability.
+
+For the hash functions you can use any of the popular choices (e.g Fowler–Noll–Vo hash function) and their implementations off the shelf. 
