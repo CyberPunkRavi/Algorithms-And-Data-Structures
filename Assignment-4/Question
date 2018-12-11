@@ -1,0 +1,6 @@
+Please code the solution for CLRS problem 16.2-4 in C. Places changed to get Indian setting.
+
+Professor G has always dreamed of inline skating across Uttar Pradesh. He plans to cross the state on highway NH 2, which runs from Mughalsarai, on the eastern border with Bihar, to Mathura, near the western border with Haryana.
+
+The professor can carry two liters of water, and he can skate m miles before running out of water. (Because UP is relatively flat, the professor does not have to worry about drinking water at a greater rate on uphill sections than on flat or downhill sections.) The professor will start in Mughalsarai with two full liters of water. His official UP state map shows all the places along NH 2 at which he can refill his water and the distances between these locations.
+The professor’s goal is to minimize the number of water stops along his route across the state. Give an efficient method by which he can determine which water stops he should make. 
