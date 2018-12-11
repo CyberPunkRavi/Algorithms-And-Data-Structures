@@ -1,0 +1,7 @@
+1. Design the following variant of the red black tree. Given a positive integer constant k, this “stretched” red-black tree can have at most k consecutive red nodes on any simple path from root to leaf. So, k=1 yields the usual red-black tree. Write functions for insert, delete and find. Write the code in C.
+
+2. Write out the following in LaTeX: a) the algorithm. The style of the pseudo-code would resemble CLRS. b) a brief proof sketch as to why your algorithms are correct.
+
+3. Using the same (randomly generated) data sets, compare the performance of this version with the conventional Red-Black tree in terms of total number of rotations and search time.
+
+You can use code for Red Black tree from the internet. For the rest, please see the anti-plagiarism policy given on our website and adhere to recommended practices. If you have any queries, we will discuss in the class on Friday.
