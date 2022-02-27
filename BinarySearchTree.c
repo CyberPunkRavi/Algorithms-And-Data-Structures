@@ -6,6 +6,10 @@ struct tree{
 	struct tree *right;};
 typedef struct tree bst;
 bst *root=NULL;
+int display(bst *root);
+int defth(bst* root);
+int max(int a, int b);
+
 int main()
 {
 	while(1)
@@ -61,11 +65,11 @@ int main()
 	display(root);
 	printf("Defth of tree %d\n",defth(root)-1);
 }
-display(bst *root)
+int display(bst *root)
 {
 	if(root==NULL)
 	{
-		return;
+		return 0;
 	}
 	else
 	{
@@ -73,17 +77,17 @@ display(bst *root)
 		display(root->left);
 		display(root->right);
 		
-		return;
+		return 0;
 	}
 }
-defth(bst* root)
+int defth(bst* root)
 {
 	if(root==NULL)
 		return 0;
 	else
 	return max(defth(root->left)+1,defth(root->right)+1);
 }
-max(a,b)
+int max(int a, int b)
 {
 	if(a>=b)
 		return a;
